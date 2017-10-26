@@ -53,7 +53,7 @@ try{
             sql.get(`SELECT * FROM commands WHERE command ="${args[0]}"`).then(row => {
                 if (!row) {
                     console.log();
-                    sql.run("INSERT INTO commands (userId, command, message) VALUES (?, ?, ?)", [author, new_command, new_message.join(" ")]).then(row =>{
+                    sql.run("INSERT INTO commands (userId, command, message) VALUES (?, ?, ?)", [author, new_command.toLowerCase(), new_message.join(" ")]).then(row =>{
                     message.channel.send("Saved a new tag with " + args[0]);                        
                     });
                     
@@ -91,7 +91,7 @@ try{
     var author = message.author.id.toString();
     try{
         if(author == '12068783246016512'){
-            sql.get(`SELECT * FROM commands WHERE command ="${args[0]}"`).then(row => {
+            sql.get(`SELECT * FROM commands WHERE command ="${args[0]}" COLLATE NOCASE`).then(row => {
                 if (!row) {
                     message.channel.send("No commands exist with that tag.")
                 } else {
