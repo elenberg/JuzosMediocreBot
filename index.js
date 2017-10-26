@@ -13,17 +13,23 @@ fs.readdir("./events/", (err, files) => {
     let eventName = file.split(".")[0];
     console.log(eventName)
     // super-secret recipe to call events with all their proper arguments *after* the `client` var.
+    try{
     client.on(eventName, (...args) => eventFunction.run(client, ...args));
+    } catch (err) {
+        console.log(err);
+    }
   });
 });
 
 client.on("message", (message) => {  
+try{
   if (message.author.bot) return;
   if(message.content.indexOf(config.prefix) !== 0) return;
   if (message.channel.type === "dm") return; 
   
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+
   if (command === "prefix") {
       var items = message.content.split(/\s+/);
       if(items.length != 2 || items[1].length != 1){
@@ -138,7 +144,10 @@ client.on("message", (message) => {
 
 
 
-
+    }
+    catch (error) {
+        console.log(error, "ERROR", message.content);
+    }
 });
 
 
